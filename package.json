@@ -1,0 +1,67 @@
+{
+  "name": "cladex",
+  "version": "0.5.0",
+  "description": "Local installable ClaDex desktop workspace for OpenClaude and OpenDesign workflows.",
+  "main": "src/main.js",
+  "author": "ClaDex",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "vite --host 127.0.0.1",
+    "electron": "electron .",
+    "dev": "vite --host 127.0.0.1",
+    "build:renderer": "vite build",
+    "build": "npm run build:renderer && electron-builder --win nsis",
+    "build:linux": "electron-builder --linux AppImage",
+    "check": "node --check src/main.js && node --check src/preload.js && node --check src/backend/database.js && node --check src/backend/keychain.js && node --check src/backend/mcp-manager.js",
+    "make:icon": "node scripts/make-icon.js"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "highlight.js": "^11.11.1",
+    "keytar": "^7.9.0",
+    "marked": "^18.0.3",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "sql.js": "^1.14.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "autoprefixer": "^10.5.0",
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3",
+    "pngjs": "^7.0.0",
+    "postcss": "^8.5.14",
+    "rcedit": "^5.0.2",
+    "tailwindcss": "^3.4.17",
+    "vite": "^8.0.13"
+  },
+  "build": {
+    "appId": "local.cladex",
+    "productName": "ClaDex",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "renderer-dist/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico",
+      "signAndEditExecutable": false
+    },
+    "afterPack": "scripts/after-pack.js",
+    "nsis": {
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
